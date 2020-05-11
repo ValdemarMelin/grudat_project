@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"neuralnetwork","l":"MathUtilities"},{"p":"neuralnetwork","l":"Test"},{"p":"neuralnetwork","l":"Trainer"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"neuralnetwork.model","l":"DenseLayerDescriptor"},{"p":"neuralnetwork.model","l":"LayerDescriptor"},{"p":"neuralnetwork","l":"MathUtilities"},{"p":"neuralnetwork","l":"Model"},{"p":"test","l":"ModelSaveTest"},{"p":"neuralnetwork.trainer","l":"Trainer"},{"p":"test","l":"TrainerTest"},{"p":"test","l":"TrainerTest2"}]
