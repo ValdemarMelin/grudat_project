@@ -16,7 +16,11 @@ public class Model implements Serializable {
 	private static final long serialVersionUID = -399505443432890425L;
 	
 	private final LayerDescriptor[] modelDescriptor;
-	private final double[][] params;
+	
+	/**
+	 * The current weights/parameters of the model.
+	 */
+	public final double[][] params;
 	
 	public Model(LayerDescriptor[] modelDescriptor) {
 		this.modelDescriptor = modelDescriptor.clone();
@@ -33,15 +37,6 @@ public class Model implements Serializable {
 	 */
 	public LayerDescriptor getLayerDescriptor(int layer) {
 		return modelDescriptor[layer];
-	}
-	
-	/**
-	 * 
-	 * @param layer - the index of the layer in the model.
-	 * @return the array of weights for the layer.
-	 */
-	public double[] getParams(int layer) {
-		return params[layer];
 	}
 	
 	/**

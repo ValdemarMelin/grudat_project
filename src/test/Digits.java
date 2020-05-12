@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -39,26 +38,29 @@ public class Digits {
 	
 	public static void main(String[] args) throws Exception {
 		File folder = new File("C:/Users/Valde/Desktop/digits/");
-		File modelFile = new File(folder, "model3.ai");
+		File modelFile = new File(folder, "model5.ai");
 		Model model;
+		Trainer t;
 		if(modelFile.exists()) {
 			ObjectInputStream oin = new ObjectInputStream(new FileInputStream(modelFile));
 			model = (Model) oin.readObject();
 			oin.close();
+			t = new Trainer(model);
 		}
 		else {
 			model = new Model(new LayerDescriptor[] {
 					new DenseLayerDescriptor(5*5,12),
 					new DenseLayerDescriptor(12, 10)
 			});
+			t = new Trainer(model);
+			t.randomizeWeights(0.1);
 		}
 		double[][][] data = loadData(ImageIO.read(new File(folder, "digits.png")));
-		Trainer t = new Trainer(model);
+		//*
 		long time0 = 0;
 		int imax = 1000000;
-		for(int i = 0; i < imax; i++) {
-			t.eval(data[0], data[1]);
-			t.step(0.01);
+		for(int i = 0; i < imax; i+=10000) {
+			t.trainGDB(10000, 0.5, data[0], data[1]);
 			long time1 = System.currentTimeMillis();
 			if(time1 - time0 > 5000) {
 				System.out.println("Progress: " + (int)Math.round(100*i/(double)imax) + "%" + " (iteration " + i + " of " + imax + ")");
@@ -70,10 +72,10 @@ public class Digits {
 				time0 = System.currentTimeMillis();
 			}
 		}
-		/*
+		/*/
 		for(int i = 0; i < 10; i++) {
 			System.out.println(i + ": " + Arrays.toString(t.getOutput(data[0][i])));
 		}
-		*/
+		//*/
 	}
 }
