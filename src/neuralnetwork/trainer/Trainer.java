@@ -16,6 +16,7 @@ public class Trainer {
 	private final Layer[] layers;
 	private final int nwOutC;
 	private final Model model;
+	// private final double[][][] params, buffers for params, write to model by new method
 	private final double[][] grad;
 	private final double[][] id;
 	
@@ -124,7 +125,7 @@ public class Trainer {
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the output of the model with current weights
 	 * @param input - the input to the model
