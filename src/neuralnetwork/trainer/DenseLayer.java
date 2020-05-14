@@ -3,15 +3,15 @@ package neuralnetwork.trainer;
 import neuralnetwork.MathUtilities;
 import neuralnetwork.model.DenseLayerDescriptor;
 
-class DenseLayer implements Layer {
+final class DenseLayer implements Layer {
 	
 	private final int inputCount, outputCount;
 	private final double[] weights;
 	private final double[] stimuli;
 	private final double[] output;
 	private final double[][] jacobian;
-	private final double[][] outputJacobian;
-	private final double[][] weightJacobian;
+	private final double[][] chainedJacobian;
+	private final double[][] chainedWeightJacobian;
 	private double[] input;
 
 	public DenseLayer(DenseLayerDescriptor layerDescriptor, double[] weights, int nwOutC) {
@@ -21,14 +21,14 @@ class DenseLayer implements Layer {
 		this.stimuli = new double[layerDescriptor.getOutputCount()];
 		this.output = new double[layerDescriptor.getOutputCount()];
 		this.jacobian = new double[layerDescriptor.getOutputCount()][layerDescriptor.getInputCount()];
-		this.outputJacobian = new double[nwOutC][layerDescriptor.getInputCount()];
-		this.weightJacobian = new double[nwOutC][layerDescriptor.getWeightCount()];
+		this.chainedJacobian = new double[nwOutC][layerDescriptor.getInputCount()];
+		this.chainedWeightJacobian = new double[nwOutC][layerDescriptor.getWeightCount()];
 		this.input = null;
 	}
 
 	@Override
 	public double[][] getWeightDerivative() {
-		return weightJacobian;
+		return chainedWeightJacobian;
 	}
 
 	@Override
@@ -50,22 +50,22 @@ class DenseLayer implements Layer {
 
 	@Override
 	public double[][] bprop(double[][] chain) {
-		MathUtilities.matrixProduct(chain, jacobian, outputJacobian);
-		for(int o = 0; o < weightJacobian.length; o++) {
-			for(int wi = 0; wi < weightJacobian[o].length; wi++) {
-				weightJacobian[o][wi] = 0;
+		MathUtilities.matrixProduct(chain, jacobian, chainedJacobian);
+		for(int o = 0; o < chainedWeightJacobian.length; o++) {
+			for(int wi = 0; wi < chainedWeightJacobian[o].length; wi++) {
+				chainedWeightJacobian[o][wi] = 0;
 			}
 		}
-		for(int o = 0; o < weightJacobian.length; o++) {
+		for(int o = 0; o < chainedWeightJacobian.length; o++) {
 			for(int n = 0; n < outputCount; n++) {
 				final double fprime = MathUtilities.dfdx(stimuli[n]);
 				for(int w = 0; w < inputCount; w++) {
-					weightJacobian[o][n*(inputCount+1) + w] += chain[o][n]*fprime*input[w];
+					chainedWeightJacobian[o][n*(inputCount+1) + w] += chain[o][n]*fprime*input[w];
 				}
-				weightJacobian[o][n*(inputCount+1) + inputCount] = fprime*chain[o][n];
+				chainedWeightJacobian[o][n*(inputCount+1) + inputCount] = fprime*chain[o][n];
 			}
 		}
-		return outputJacobian;
+		return chainedJacobian;
 	}
 
 

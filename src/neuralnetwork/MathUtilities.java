@@ -1,5 +1,7 @@
 package neuralnetwork;
 
+import java.util.Arrays;
+
 /**
  * Some helper methods for math.
  * @author Valdemar Melin
@@ -28,13 +30,23 @@ public class MathUtilities {
 	
 	/**
 	 * Makes an identity matrix.
-	 * @param a
+	 * @param a the matrix
 	 */
 	public static void matrixIdentity(double[][] a) {
 		for(int i = 0; i < a.length; i++) {
 			for(int j = 0; j < a[i].length; j++) {
 				a[i][j] = i == j ? 1 : 0;
 			}
+		}
+	}
+	
+	/**
+	 * Sets all entries in the matrix to 0.
+	 * @param a the matrix
+	 */
+	public static void zeroMatrix(double[][] a) {
+		for(int i = 0; i < a.length; i++) {
+			Arrays.fill(a[i], 0);
 		}
 	}
 	

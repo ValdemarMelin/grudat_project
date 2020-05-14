@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -18,26 +19,25 @@ import neuralnetwork.trainer.Trainer;
  */
 public class TestDigits {
 	public static void main(String[] args) throws Exception {
-		File dir = new File("C:/"); // insert directory to network and test image here
-		ObjectInputStream oin = new ObjectInputStream(new FileInputStream(new File(dir,"model5.ai")));
+		File dir = new File("C:/Users/valde/Desktop/digits"); // insert directory to network and test image here
+		ObjectInputStream oin = new ObjectInputStream(new FileInputStream(new File(dir,"m2.ai")));
 		Model model = (Model) oin.readObject();
 		oin.close();
 		Trainer t = new Trainer(model);
 		BufferedImage inputImage = ImageIO.read(new File(dir, "test.png"));
-		double[] input = new double[25];
-		for(int i = 0; i < 5; i++) {
-			for(int j = 0; j < 5; j++) {
-				input[i*5 + j] = (inputImage.getRGB(j, i) % 256)/256.0;
+		double[] input = new double[100];
+		for(int i = 0; i < 10; i++) {
+			for(int j = 0; j < 10; j++) {
+				input[i*10 + j] = (inputImage.getRGB(j, i) % 256)/256.0;
 			}
 		}
 		double[] o = t.getOutput(input);
-		int imax = -1; double max = 0;
+		System.out.println(Arrays.toString(o));
 		for(int i = 0; i < 10; i++) {
-			if(o[i] > max) {
-				max = o[i];
-				imax = i;
+			if(o[i] > 0.01) {
+				System.out.println(Math.round(o[i]*1000)/10.0 + "% on " + i);
 			}
 		}
-		System.out.println((imax + 1)%10);
+		
 	}
 }

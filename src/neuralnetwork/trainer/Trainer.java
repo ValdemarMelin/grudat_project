@@ -2,6 +2,7 @@ package neuralnetwork.trainer;
 
 import neuralnetwork.MathUtilities;
 import neuralnetwork.Model;
+import neuralnetwork.model.ConvLayerDescriptor;
 import neuralnetwork.model.DenseLayerDescriptor;
 
 /**
@@ -43,6 +44,9 @@ public class Trainer {
 			if(model.getLayerDescriptor(l) instanceof DenseLayerDescriptor) {
 				layers[l] = new DenseLayer((DenseLayerDescriptor) model.getLayerDescriptor(l), params[l], nwOutC);
 			}
+			else if(model.getLayerDescriptor(l) instanceof ConvLayerDescriptor) {
+				layers[l] = new ConvLayer((ConvLayerDescriptor) model.getLayerDescriptor(l), params[l], nwOutC);
+			}
 			// TODO: add other layer types
 			else {
 				throw new RuntimeException("Unsupported layer type");
@@ -65,7 +69,7 @@ public class Trainer {
 	}
 	
 	/**
-	 * Performs a specified number of iterations of gradient descend with backtracking. Does NOT update the model.
+	 * Performs a specified number of iterations of gradient descend with backtracking.
 	 * Note that this method can be implemented using only the public interface of this class. 
 	 * @param iterCount the number of iterations.
 	 * @param beta the value of the backtracking parameter.

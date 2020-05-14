@@ -7,7 +7,7 @@ This is a project in the course "Grundläggande datalogi" on KTH.
 Valdemar Melin
 ### Features
 - Create, save and load models.
- - Supported layer types: currently only fully connected layers.
+	- Supported layer types: fully connected (dense) layers, convolution layers.
 - Train the model with gradient descend.
 See documentation (/doc) for more details.
 ### Usage
