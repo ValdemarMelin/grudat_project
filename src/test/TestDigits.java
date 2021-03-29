@@ -1,4 +1,4 @@
-package test.digits;
+package test;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,8 +13,8 @@ import neuralnetwork.trainer.Trainer;
 
 /**
  * Tests the network trained in Digits.java file. Place the network and a 5x5 pixel gray-scale digit image
- * in a directory and name them "m3.ai" and "test.png" and run the code ( you need to enter the directory in the source).
- * @author Valdemar Melin
+ * in a directory and name them "model5.ai" and "test.png" and run the code ( you need to enter the directory in the source).
+ * @author valde
  *
  */
 public class TestDigits {
@@ -26,7 +26,6 @@ public class TestDigits {
 		Trainer t = new Trainer(model);
 		BufferedImage inputImage = ImageIO.read(new File(dir, "test.png"));
 		double[] input = new double[100];
-		Arrays.fill(input, 1);
 		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
 				input[i*10 + j] = (inputImage.getRGB(j, i) % 256)/256.0;
